@@ -28,7 +28,7 @@ const handleOutput = (data: Buffer) => {
 }
 
 // Generate the joi schema from an incoming object
-export const getSchema = (myObj: GenericStringKeyObject | GenericNumberKeyObject, options?: CreateSchemaOptions) => {
+export const generateSchema = async (myObj: GenericStringKeyObject | GenericNumberKeyObject, options?: CreateSchemaOptions) => {
   stdOut = options?.stdOut
   fileNameAndPath = options?.fileNameAndPath
 
@@ -37,18 +37,3 @@ export const getSchema = (myObj: GenericStringKeyObject | GenericNumberKeyObject
   generator.write(myObj)
   generator.end()
 }
-
-// My JavaScript object
-const myObj = {
-  stringKey: 'string',
-  numberKey: 1,
-  objectKey: {
-    str: 'str'
-  },
-  arrayKey:[
-    'string1',
-    'string2'
-  ]
-}
-
-getSchema(myObj, { stdOut: true, fileNameAndPath: './output.js' })
