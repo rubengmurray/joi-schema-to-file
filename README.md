@@ -1,6 +1,6 @@
 ### joi-schema-to-file
 
-Take a JavaScript object and ouput a joi schema to a file and / or the terminal.
+Take a JavaScript object and output a joi schema to a file and / or the terminal.
 
 Wraps the functionality of the `joi-machine` npm package.
 
