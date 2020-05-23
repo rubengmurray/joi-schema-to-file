@@ -28,12 +28,12 @@ const handleOutput = (data: Buffer) => {
 }
 
 // Generate the joi schema from an incoming object
-export const generateSchema = async (myObj: GenericStringKeyObject | GenericNumberKeyObject, options?: CreateSchemaOptions) => {
+export const generateSchema = async (objToSchemify: GenericStringKeyObject | GenericNumberKeyObject, options?: CreateSchemaOptions) => {
   stdOut = options?.stdOut
   fileNameAndPath = options?.fileNameAndPath
 
   const generator = joiMachine.obj()
   generator.pipe(concatStream({ encoding: 'string' }, handleOutput))
-  generator.write(myObj)
+  generator.write(objToSchemify)
   generator.end()
 }

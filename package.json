@@ -1,8 +1,8 @@
 {
   "name": "joi-schema-to-file",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "test": "tsc --noEmit && mocha --require source-map-support/register --require ts-node/register --full-trace 'tests/*.test.ts' --exit --timeout 15000"
   },
