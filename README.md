@@ -1,8 +1,8 @@
 ### joi-schema-to-file
 
-Take a JavaScript object and generate a joi schema, outputted into a file.
+Take a JavaScript object and ouput a joi schema to a file and / or the terminal.
 
-Wraps the functionality of the `joi-machine` npm package and outputs in a more readable / usable format.
+Wraps the functionality of the `joi-machine` npm package.
 
 ## Install
 ```
@@ -32,7 +32,7 @@ const fileNameAndPath = `YOUR_DIRECTORY/YOUR_FILENAME.js`
 // stdOut: true will also log the generated schema to the console
 generateSchema(myObj, { stdOut: false, fileNameAndPath });
 
-// Generates a file in the your specified directory with the following contents:
+// Generates a file in the specified directory with the following:
 Joi.object().keys({
     stringKey: Joi.string(),
     numberKey: Joi.number().integer(),
