@@ -9,14 +9,19 @@ interface GenericNumberKeyObject { [key: number]: unknown }
 interface CreateSchemaOptions {
   stdOut: boolean;
   fileNameAndPath: string;
-  jsImportType: 'require' | 'import';
-  joiOrHapiJoi: 'joi' | '@hapi/joi'
+  jsModuleOptions?: ExportOptions
+}
+
+interface ExportOptions {
+  importType: 'import' | 'require';
+  joiOrHapiJoi: 'joi' | '@hapi/joi';
+  exportType: 'export' | 'module';
+  schemaName: string;
 }
 
 let stdOut: boolean | undefined;
 let fileNameAndPath: string | undefined;
-let jsImportType: 'require' | 'import';
-let joiOrHapiJoi: 'joi' | '@hapi/joi';
+let jsModuleOptions: ExportOptions | undefined;
 
 // Callback function to prettify the output
 const handleOutput = (data: Buffer) => {
@@ -26,17 +31,37 @@ const handleOutput = (data: Buffer) => {
     console.log(beautifiedJoiSchema);
   }
 
-  let importText
+  let importText = ''
+  let exportText = ''
 
-  switch(jsImportType) {
-    case 'import':
-      importText = `import Joi from '${joiOrHapiJoi}'`
-    case 'require':
-      importText = `const Joi = require('${joiOrHapiJoi}')`
+  if (jsModuleOptions) {
+
+    switch(jsModuleOptions.importType) {
+      case 'import':
+        importText = `import Joi from '${jsModuleOptions.joiOrHapiJoi}'\n\n`
+        break;
+      case 'require':
+        importText = `const Joi = require('${jsModuleOptions.joiOrHapiJoi}')\n\n`
+        break;
+      default:
+        throw new Error('importType not defined in exportOptions')
+    }
+
+    switch(jsModuleOptions.exportType) {
+      case 'export':
+        exportText = `export const ${jsModuleOptions.schemaName} = `
+        break;
+      case 'module':
+        exportText = `exports.${jsModuleOptions.schemaName} = `
+        break;
+      default:
+        throw new Error('exportType not defined in exportOptions')
+    }
   }
 
+
   if (fileNameAndPath) {
-    fs.writeFileSync(fileNameAndPath, `${importText}\n\nexport default ${beautifiedJoiSchema}`)
+    fs.writeFileSync(fileNameAndPath, `${importText}${exportText}${beautifiedJoiSchema}`)
   }
 }
 
@@ -45,10 +70,22 @@ export const generateSchema = async (
   objToSchemify: GenericStringKeyObject | GenericNumberKeyObject,
   options: CreateSchemaOptions
 ) => {
-  stdOut = options?.stdOut
-  fileNameAndPath = options?.fileNameAndPath
-  joiOrHapiJoi = options.joiOrHapiJoi
-  jsImportType = options.jsImportType
+  stdOut = options?.stdOut;
+  fileNameAndPath = options?.fileNameAndPath;
+
+  if (!stdOut && !fileNameAndPath) {
+    throw new Error('At least one of stdOut or fileNameAndPath must be provided')
+  }
+
+  if (jsModuleOptions) {
+    const { importType, joiOrHapiJoi, exportType, schemaName } = jsModuleOptions;
+
+    if (!importType || !joiOrHapiJoi || !exportType || !schemaName) {
+      throw new Error('missing arguments for jsModuleOptions')
+    }
+  }
+
+  jsModuleOptions = options?.jsModuleOptions;
 
   const generator = joiMachine.obj()
   generator.pipe(concatStream({ encoding: 'string' }, handleOutput))
