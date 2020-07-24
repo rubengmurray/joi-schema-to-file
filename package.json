@@ -1,13 +1,17 @@
 {
   "name": "joi-schema-to-file",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "build/index.js",
   "scripts": {
     "test": "tsc --noEmit && mocha --require source-map-support/register --require ts-node/register --full-trace 'tests/*.test.ts' --exit --timeout 15000"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/rubengmurray/joi-schema-to-file.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Reece Daniels <https://github.com/rubengmurray>",
   "license": "ISC",
   "dependencies": {
     "@types/concat-stream": "^1.6.0",
