@@ -1,8 +1,8 @@
 ### joi-schema-to-file
 
-Take a JavaScript object and output a joi schema to a file and / or the terminal.
+Take any JavaScript object and output a `joi` schema to an importable module.
 
-Wraps the functionality of the `joi-machine` npm package.
+Thanks to Alan Shaw for the underlying work on `joi-machine`, which this module wraps.
 
 ## Install
 ```
@@ -27,13 +27,26 @@ const myObj = {
   ]
 }
 
-const fileNameAndPath = `YOUR_DIRECTORY/YOUR_FILENAME.js`
+// Specificy the full path to the file you want to create
+const fileNameAndPath = `${__dirname}/output.js`
 
-// stdOut: true will also log the generated schema to the console
-generateSchema(myObj, { stdOut: false, fileNameAndPath });
+await generateSchema(myObj, {
+  stdOut: false, // setting this to true will also log the generated schema to the console
+  fileNameAndPath,
+  jsImportType: 'import',
+  joiOrHapiJoi: 'joi'
+});
 
-// Generates a file in the specified directory with the following:
-Joi.object().keys({
+// Try and read the file
+fs.readFileSync(fileNameAndPath).toString()
+```
+
+Generates a file in the specified directory with the following:
+
+```javascript
+const Joi = require('joi')
+
+export default Joi.object().keys({
     stringKey: Joi.string(),
     numberKey: Joi.number().integer(),
     objectKey: Joi.object().keys({
@@ -42,3 +55,5 @@ Joi.object().keys({
     arrayKey: Joi.array().items(Joi.string(), Joi.string())
 })
 ```
+
+One test included in the github repo that generates the above.

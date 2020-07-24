@@ -1,7 +1,7 @@
 import 'mocha';
 import { generateSchema } from '../src/index';
 import fs from 'fs';
-import path from 'path';
+// import path from 'path';
 
 // My JavaScript object
 const myObj = {
@@ -19,7 +19,13 @@ const myObj = {
 describe('Tests', () => {
   it('should generate a file', async () => {
     const fileNameAndPath = `${__dirname}/output.js`
-    await generateSchema(myObj, { stdOut: false, fileNameAndPath });
+    console.log(fileNameAndPath)
+    await generateSchema(myObj, {
+      stdOut: false,
+      fileNameAndPath,
+      jsImportType: 'import',
+      joiOrHapiJoi: 'joi'
+    });
 
     // Try and read the file
     fs.readFileSync(fileNameAndPath).toString()
