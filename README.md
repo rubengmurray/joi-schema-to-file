@@ -28,25 +28,69 @@ const myObj = {
 }
 
 // Specificy the full path to the file you want to create
-const fileNameAndPath = `${__dirname}/output.js`
 
+const fileNameAndPath = `${__dirname}/import-export-output.js`
 await generateSchema(myObj, {
-  stdOut: false, // setting this to true will also log the generated schema to the console
+  stdOut: false,
   fileNameAndPath,
-  jsImportType: 'import',
-  joiOrHapiJoi: 'joi'
+  jsModuleOptions: {
+    importType: 'import',
+    joiOrHapiJoi: 'joi',
+    exportType: 'export',
+    schemaName: 'myObjSchema'
+  }
 });
 
-// Try and read the file
-fs.readFileSync(fileNameAndPath).toString()
+const fileNameAndPath = `${__dirname}/require-module-output.js`
+await generateSchema(myObj, {
+  stdOut: false,
+  fileNameAndPath,
+  jsModuleOptions: {
+    importType: 'require',
+    joiOrHapiJoi: '@hapi/joi',
+    exportType: 'module',
+    schemaName: 'myObjSchema'
+  }
+});
+
+  const fileNameAndPath = `${__dirname}/schema-only-output.js`
+  await generateSchema(myObj, {
+    stdOut: false,
+    fileNameAndPath,
+  });
+})
 ```
 
-Generates a file in the specified directory with the following:
+Generates the following three files in the specified directory with the following:
 
 ```javascript
-const Joi = require('joi')
+import Joi from 'joi'
 
-export default Joi.object().keys({
+export const myObjSchema = Joi.object().keys({
+    stringKey: Joi.string(),
+    numberKey: Joi.number().integer(),
+    objectKey: Joi.object().keys({
+        str: Joi.string()
+    }),
+    arrayKey: Joi.array().items(Joi.string(), Joi.string())
+})
+```
+
+```javascript
+const Joi = require('@hapi/joi')
+
+exports.myObjSchema = Joi.object().keys({
+    stringKey: Joi.string(),
+    numberKey: Joi.number().integer(),
+    objectKey: Joi.object().keys({
+        str: Joi.string()
+    }),
+    arrayKey: Joi.array().items(Joi.string(), Joi.string())
+})
+```
+
+```javascript
+Joi.object().keys({
     stringKey: Joi.string(),
     numberKey: Joi.number().integer(),
     objectKey: Joi.object().keys({

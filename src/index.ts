@@ -61,7 +61,7 @@ const handleOutput = (data: Buffer) => {
 
 
   if (fileNameAndPath) {
-    fs.writeFileSync(fileNameAndPath, `${importText}${exportText}${beautifiedJoiSchema}`)
+    fs.writeFileSync(fileNameAndPath, `${importText}${exportText}${beautifiedJoiSchema}\n`)
   }
 }
 
