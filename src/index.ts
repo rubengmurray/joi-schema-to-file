@@ -19,21 +19,24 @@ interface ExportOptions {
   schemaName: string;
 }
 
+// TODO: Remove this mutation...
 let stdOut: boolean | undefined;
 let fileNameAndPath: string | undefined;
-let jsModuleOptions: ExportOptions | undefined;
 
 // Callback function to prettify the output
-const handleOutput = (data: Buffer) => {
+const handleOutput = (data: Buffer, jsModuleOptions: ExportOptions | undefined) => {
   const beautifiedJoiSchema = jsBeautify(data.toString())
 
   if (stdOut) {
     console.log(beautifiedJoiSchema);
   }
 
+  // TODO: mutation... eeww
   let importText = ''
   let exportText = ''
 
+  console.log(jsModuleOptions)
+  // Is a global because concatStream doesn't accept with two args
   if (jsModuleOptions) {
 
     switch(jsModuleOptions.importType) {
@@ -59,6 +62,7 @@ const handleOutput = (data: Buffer) => {
     }
   }
 
+  console.log(importText, exportText)
 
   if (fileNameAndPath) {
     fs.writeFileSync(fileNameAndPath, `${importText}${exportText}${beautifiedJoiSchema}\n`)
@@ -66,7 +70,7 @@ const handleOutput = (data: Buffer) => {
 }
 
 // Generate the joi schema from an incoming object
-export const generateSchema = async (
+export const generateSchema = (
   objToSchemify: GenericStringKeyObject | GenericNumberKeyObject,
   options: CreateSchemaOptions
 ) => {
@@ -77,18 +81,16 @@ export const generateSchema = async (
     throw new Error('At least one of stdOut or fileNameAndPath must be provided')
   }
 
-  if (jsModuleOptions) {
-    const { importType, joiOrHapiJoi, exportType, schemaName } = jsModuleOptions;
+  if (options?.jsModuleOptions) {
+    const { importType, joiOrHapiJoi, exportType, schemaName } = options.jsModuleOptions;
 
     if (!importType || !joiOrHapiJoi || !exportType || !schemaName) {
       throw new Error('missing arguments for jsModuleOptions')
     }
   }
 
-  jsModuleOptions = options?.jsModuleOptions;
-
   const generator = joiMachine.obj()
-  generator.pipe(concatStream({ encoding: 'string' }, handleOutput))
+  generator.pipe(concatStream({ encoding: 'string' }, (data: Buffer) => handleOutput(data, options.jsModuleOptions)))
   generator.write(objToSchemify)
   generator.end()
 }

@@ -27,10 +27,11 @@ const myObj = {
   ]
 }
 
-// Specificy the full path to the file you want to create
+// NOTE: Cannot currently be run concurrently
 
+// Specify the full path to the file you want to create (e.g.)
 const fileNameAndPath = `${__dirname}/import-export-output.js`
-await generateSchema(myObj, {
+generateSchema(myObj, {
   stdOut: false,
   fileNameAndPath,
   jsModuleOptions: {
@@ -42,7 +43,7 @@ await generateSchema(myObj, {
 });
 
 const fileNameAndPath = `${__dirname}/require-module-output.js`
-await generateSchema(myObj, {
+generateSchema(myObj, {
   stdOut: false,
   fileNameAndPath,
   jsModuleOptions: {
@@ -53,12 +54,11 @@ await generateSchema(myObj, {
   }
 });
 
-  const fileNameAndPath = `${__dirname}/schema-only-output.js`
-  await generateSchema(myObj, {
-    stdOut: false,
-    fileNameAndPath,
-  });
-})
+const fileNameAndPath = `${__dirname}/schema-only-output.js`
+generateSchema(myObj, {
+  stdOut: false,
+  fileNameAndPath,
+});
 ```
 
 Generates the following three files in the specified directory with the following:

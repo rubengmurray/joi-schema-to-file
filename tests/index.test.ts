@@ -19,7 +19,7 @@ const myObj = {
 describe('Tests', () => {
   it('should generate a TypeScript type import file', async () => {
     const fileNameAndPath = `${__dirname}/import-export-output.js`
-    await generateSchema(myObj, {
+    generateSchema(myObj, {
       stdOut: false,
       fileNameAndPath,
       jsModuleOptions: {
@@ -36,7 +36,7 @@ describe('Tests', () => {
 
   it('should generate a vanilla js require file', async () => {
     const fileNameAndPath = `${__dirname}/require-module-output.js`
-    await generateSchema(myObj, {
+    generateSchema(myObj, {
       stdOut: false,
       fileNameAndPath,
       jsModuleOptions: {
@@ -53,7 +53,7 @@ describe('Tests', () => {
 
   it('should generate a joi schema with no export', async () => {
     const fileNameAndPath = `${__dirname}/schema-only-output.js`
-    await generateSchema(myObj, {
+    generateSchema(myObj, {
       stdOut: false,
       fileNameAndPath,
     });
