@@ -31,11 +31,10 @@ const handleOutput = (data: Buffer, jsModuleOptions: ExportOptions | undefined) 
     console.log(beautifiedJoiSchema);
   }
 
-  // TODO: mutation... eeww
+  // TODO: Remove mutation
   let importText = ''
   let exportText = ''
 
-  console.log(jsModuleOptions)
   // Is a global because concatStream doesn't accept with two args
   if (jsModuleOptions) {
 
@@ -61,8 +60,6 @@ const handleOutput = (data: Buffer, jsModuleOptions: ExportOptions | undefined) 
         throw new Error('exportType not defined in exportOptions')
     }
   }
-
-  console.log(importText, exportText)
 
   if (fileNameAndPath) {
     fs.writeFileSync(fileNameAndPath, `${importText}${exportText}${beautifiedJoiSchema}\n`)
@@ -90,6 +87,7 @@ export const generateSchema = (
   }
 
   const generator = joiMachine.obj()
+  // Concatstream only takes a function with a Buffer arg
   generator.pipe(concatStream({ encoding: 'string' }, (data: Buffer) => handleOutput(data, options.jsModuleOptions)))
   generator.write(objToSchemify)
   generator.end()
