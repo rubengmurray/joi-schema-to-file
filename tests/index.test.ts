@@ -1,7 +1,9 @@
 import 'mocha';
 import { generateSchema } from '../src/index';
 import fs from 'fs';
-// import path from 'path';
+import { setTimeout } from 'timers/promises';
+import { assert } from 'console';
+import Joi from 'joi';
 
 // My JavaScript object
 const myObj = {
@@ -30,8 +32,15 @@ describe('Tests', () => {
       }
     });
 
+    // Wait for the file to be written to disc
+    await setTimeout(3000);
+
     // Try and read the file
-    fs.readFileSync(fileNameAndPath).toString()
+    const res = fs.readFileSync(fileNameAndPath).toString()
+
+    assert(res.includes("import Joi from 'joi'"));
+
+    fs.rmSync(fileNameAndPath);
   })
 
   it('should generate a vanilla js require file', async () => {
@@ -47,8 +56,16 @@ describe('Tests', () => {
       }
     });
 
+    // Wait for the file to be written to disc
+    await setTimeout(3000);
+
     // Try and read the file
-    fs.readFileSync(fileNameAndPath).toString()
+    const { myObjSchema } = require(fileNameAndPath);
+    
+    // Validate the original object against the new schema
+    await Joi.validate(myObj, myObjSchema);
+
+    fs.rmSync(fileNameAndPath);
   })
 
   it('should generate a joi schema with no export', async () => {
@@ -58,7 +75,12 @@ describe('Tests', () => {
       fileNameAndPath,
     });
 
+    // Wait for the file to be written to disc
+    await setTimeout(3000);
+
     // Try and read the file
-    fs.readFileSync(fileNameAndPath).toString()
+    fs.readFileSync(fileNameAndPath).toString();
+
+    fs.rmSync(fileNameAndPath);
   })
 })

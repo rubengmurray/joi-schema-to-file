@@ -14,16 +14,19 @@
   "author": "Reece Daniels <https://github.com/rubengmurray>",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^14.5.0",
+    "concat-stream": "^2.0.0",
+    "joi-machine": "^3.0.0",
+    "js-beautify": "^1.11.0"
+  },
+  "devDependencies": {
     "@types/concat-stream": "^1.6.0",
     "@types/js-beautify": "^1.11.0",
     "@types/mocha": "^7.0.2",
-    "concat-stream": "^2.0.0",
-    "joi-machine": "^3.0.0",
-    "js-beautify": "^1.11.0",
-    "typescript": "^3.9.3"
-  },
-  "devDependencies": {
+    "@types/node": "^16.11.51",
+    "@types/joi": "^14.3.4",
     "mocha": "^7.1.2",
-    "ts-node": "^8.10.1"
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.3"
   }
 }
