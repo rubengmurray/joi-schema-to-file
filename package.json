@@ -25,7 +25,7 @@
     "@types/mocha": "^7.0.2",
     "@types/node": "^16.11.51",
     "@types/joi": "^14.3.4",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "ts-node": "^8.10.1",
     "typescript": "^3.9.3"
   }
