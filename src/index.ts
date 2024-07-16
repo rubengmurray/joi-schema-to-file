@@ -6,7 +6,7 @@ import fs from 'fs';
 
 interface GenericStringKeyObject { [key: string]: unknown }
 interface GenericNumberKeyObject { [key: number]: unknown }
-interface CreateSchemaOptions {
+export interface CreateSchemaOptions {
   stdOut: boolean;
   fileNameAndPath: string;
   jsModuleOptions?: ExportOptions
