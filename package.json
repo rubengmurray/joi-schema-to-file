@@ -21,12 +21,12 @@
   },
   "devDependencies": {
     "@types/concat-stream": "^1.6.0",
+    "@types/joi": "^14.3.4",
     "@types/js-beautify": "^1.11.0",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^16.11.51",
-    "@types/joi": "^14.3.4",
+    "@types/node": "20.12",
     "mocha": "^7.1.2",
-    "ts-node": "^8.10.1",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.3"
   }
 }
